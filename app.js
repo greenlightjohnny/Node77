@@ -11,6 +11,7 @@ app.set("view engine", "ejs");
 
 // database connection
 const dbURI = process.env.DB_PASS;
+console.log(dbURI);
 mongoose
   .connect(dbURI, {
     useNewUrlParser: true,
