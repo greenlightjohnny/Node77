@@ -9,10 +9,10 @@ const authController = require("../controllers/authController");
 ///Init new router object, can save as any name you want, but router is most common.
 const router = Router();
 
-///When a route is hit, uses the function imported from the controller to do something cool
-router.get("/signup", authController.signup_get);
-router.post("/signup", authController.signup_post);
-router.get("/login", authController.login_get);
-router.post("/login", authController.login_post);
+///When a route is hit, uses the the authController object to access a function for that route and do something cool
+router.get("/signup/", authController.signup_get);
+router.post("/signup/", authController.signup_post);
+router.get("/login/", authController.login_get);
+router.post("/login/", authController.login_post);
 
 module.exports = router;

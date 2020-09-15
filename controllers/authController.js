@@ -13,10 +13,13 @@ module.exports.login_get = (req, res) => {
 
 //////Receives HTTP POST request from client to sign up, sends to database
 module.exports.signup_post = (req, res) => {
-  res.send("New signup");
+  res.send("Signed up");
 };
 
 //////Receives HTTP POST request from client to login
 module.exports.login_post = (req, res) => {
-  res.send("Logged in");
+  //destructuring the req, parsed already into a JavaScript object by using middleware in the app.js file, express.json(). Here we take the user name and password from the body object
+  const { email, password } = req.body;
+
+  res.send(testMe);
 };
