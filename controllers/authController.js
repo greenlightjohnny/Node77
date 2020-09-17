@@ -3,6 +3,8 @@
 ////// Import the User model
 const User = require("../models/User");
 
+const jwt = require("jsonwebtoken");
+
 ///Handle errors (such as passed in from the User model) and returns a useful error
 const handleErrors = (err) => {
   //Create an error object, so that it can be returned as an HTTP response to the user as a JSON object with info as to why the POST request failed.
@@ -24,6 +26,12 @@ const handleErrors = (err) => {
   }
   return errors;
 };
+const maxAge = 3 * 24 * 60 * 60;
+const createToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: maxAge,
+  });
+};
 ///Sends the signup view to user
 ///Express will automatically look in the views directory and show what is inside. So "signup" for the render means express will look for a signup file inside the views directory. In this case it is an EJS file
 module.exports.signup_get = (req, res) => {
@@ -42,8 +50,10 @@ module.exports.signup_post = async (req, res) => {
   try {
     ///creating the user, awaits the response before saving to user.
     const user = await User.create({ email, password });
+    const token = createToken(user._id);
+    res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
     ///If it works, returns a 201 status along with some JSON of the user object to the client.
-    res.status(201).json(user);
+    res.status(201).json({ user: user._id });
   } catch (err) {
     ///Store any errors caught by the handleErrors function
     const errors = handleErrors(err);
