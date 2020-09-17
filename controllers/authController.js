@@ -67,5 +67,10 @@ module.exports.login_post = async (req, res) => {
   //destructuring the req, parsed already into a JavaScript object by using middleware in the app.js file, express.json(). Here we take the user name and password from the body object
   const { email, password } = req.body;
 
-  res.send(testMe);
+  try {
+    const user = await User.login(email, password);
+    res.status(200).json({ user: user._id });
+  } catch (err) {
+    res.status(400).json({});
+  }
 };
