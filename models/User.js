@@ -40,6 +40,19 @@ userSchema.post("save", function (doc, next) {
   next();
 });
 
+//Static method to login the user
+userSchema.statics.login = async function (email, password) {
+  const user = await this.findOne({ email: email });
+  if (user) {
+    const auth = await bcrypt.compare(password, user.password);
+    if (auth) {
+      return user;
+    }
+    throw Error("incorrect password");
+  }
+  throw Error("Incorrect email");
+};
+
 //Create the model. Important to use the singular of what your database is named, so our data base is "users" so we name the model "user". Mongoose will look at this, pluralize it, and connect automatically to your MongoDB database
 const User = mongoose.model("user", userSchema);
 

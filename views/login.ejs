@@ -12,14 +12,42 @@
 </form>
 <script>
   const form = document.querySelector("form");
+  const emailError = document.querySelector(".email.error");
+  const passwordError = document.querySelector(".password.error");
   form.addEventListener("submit", (e) => {
-    //stop page from refreshing
-    e.preventDefault();
+    form.addEventListener("submit", async (e) => {
+      //stop page from refreshing
+      e.preventDefault();
+      ///reset errors on submit/refresh
 
-    //getvalues
-    const email = form.email.value;
-    const password = form.password.value;
-    console.log(email, password);
+      emailError.textContent = "";
+      passwordError.textContent = "";
+
+      const email = form.email.value;
+      const password = form.password.value;
+
+      try {
+        const res = await fetch("/login", {
+          method: "POST",
+          body: JSON.stringify({ email, password }),
+          headers: { "Content-Type": "application/json" },
+        });
+        const data = await res.json();
+        console.log("#############asdfsa", data);
+        if (data.errors) {
+          emailError.textContent = data.errors.email;
+          passwordError.textContent = data.errors.password;
+        }
+        ////Sends to home page if registration works
+        if (data.user) {
+          location.assign("/");
+        }
+      } catch (err) {
+        console.log(err);
+      }
+
+      //getvalues
+    });
   });
 </script>
 
