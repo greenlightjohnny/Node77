@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
+const { requireAuth, checkUser } = require("./middleware/authMiddleware");
 require("dotenv").config();
 const app = express();
 //Get your routes here! 50% off sale, cheap!
@@ -29,8 +30,9 @@ mongoose
 app.use(express.json());
 
 // routes
+app.get("*", checkUser); // uses check user to check.
 app.get("/", (req, res) => res.render("home"));
-app.get("/smoothies", (req, res) => res.render("smoothies"));
+app.get("/smoothies", requireAuth, (req, res) => res.render("smoothies"));
 ///Tells the app what to do when certain routes are hit.
 app.use(authRoutes);
 
