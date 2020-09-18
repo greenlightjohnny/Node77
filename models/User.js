@@ -50,7 +50,7 @@ userSchema.statics.login = async function (email, password) {
     }
     throw Error("incorrect password");
   }
-  throw Error("Incorrect email");
+  throw Error("incorrect email");
 };
 
 //Create the model. Important to use the singular of what your database is named, so our data base is "users" so we name the model "user". Mongoose will look at this, pluralize it, and connect automatically to your MongoDB database
