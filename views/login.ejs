@@ -10,6 +10,7 @@
   <div class="password error"></div>
   <button>Login</button>
 </form>
+
 <script>
   const form = document.querySelector("form");
   const emailError = document.querySelector(".email.error");
@@ -33,7 +34,7 @@
         headers: { "Content-Type": "application/json" },
       });
       const data = await res.json();
-      console.log("#############asdfsa", data);
+
       if (data.errors) {
         emailError.textContent = data.errors.email;
         passwordError.textContent = data.errors.password;
