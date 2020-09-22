@@ -16,7 +16,7 @@ app.set("view engine", "ejs");
 
 // database connection
 const dbURI = process.env.DB_PASS;
-console.log(dbURI);
+
 mongoose
   .connect(dbURI, {
     useNewUrlParser: true,
@@ -35,6 +35,19 @@ app.get("/", (req, res) => res.render("home"));
 app.get("/smoothies", requireAuth, (req, res) => res.render("smoothies"));
 ///Tells the app what to do when certain routes are hit.
 app.use(authRoutes);
+if (process.env.NODE_ENV === "production") {
+  // Exprees will serve up production assets
+  //app.use(express.static("client/build"));
+
+  // Express serve up index.html file if it doesn't recognize route
+  const path = require("path");
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "views", "home.ejs"));
+  });
+}
+const port = process.env.PORT || 5000;
+app.listen(port, () => console.log(`server on ${port}`));
+const hi = "3eeee";
 
 // //Cookies
 // app.get("/set-cookies", (req, res) => {
